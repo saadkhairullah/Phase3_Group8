@@ -26,27 +26,27 @@
                 productList.innerHTML = '';
                 data.forEach(product => {
                     let li = document.createElement("li");
-                    li.innerHTML = '${product.name} - $${product.price} - Quantity: ${product.quantity}
-                        <button onclick="deleteProduct(${product.id})">Delete</button>';
+                    li.innerHTML = `${product.name} - $${product.price} - Quantity: ${product.quantity}
+                        <button onclick="deleteProduct(${product.id})">Delete</button>`;
                     productList.appendChild(li);
                 });
             });
     }
 
-    function addProducts(){
+    function addProduct(){
         let name = document.getElementById('name').value;
         let price = document.getElementById('price').value;
-        let quantity = document.getElementById('quality').value;
+        let quantity = document.getElementById('quantity').value;
 
         fetch('/products', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({name, price, quality})
+            body: JSON.stringify({name, price, quantity})
         }).then(() => fetchProducts());
     }
 
-    function deleteProducts(id){
-        fetch('/products/${id}', {method: 'DELETE'})
+    function deleteProduct(id){
+        fetch(`/products/${id}`, {method: 'DELETE'})
             .then(() => fetchProducts());
     }
 

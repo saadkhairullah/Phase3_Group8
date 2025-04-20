@@ -19,16 +19,16 @@ def index():
     return render_template('index.html')
 
 #Function to create product
-@app.route('/products', methods =['POST'])
+@app.route('/products', methods=['POST'])
 def add_product():
     data = request.json
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute("INSERT INTO products (name, price, quantity) VALUES (%s, %s, %s)",
-                   ( data['name'], data['price'], data['quantity'])) 
+    cursor.execute('INSERT INTO products (name, price, quantity) VALUES (%s, %s, %s)',
+                   (data['name'], data['price'], data['quantity']))
     conn.commit()
     conn.close()
-    return jsonify({'message': 'Product Added!'}), 201
+    return jsonify({'message': 'Product added successfully'}), 201
 
 #Function to read all the products
 @app.route('/products', methods=['GET'])
