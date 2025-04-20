@@ -7,7 +7,7 @@ DB_CONFIG = {
     'host': '127.0.0.1',
     'user': 'root',
     'password': '',
-    'Database': 'phase2_group8v2' # change to the name of your db in xmap
+    'database': 'phase2_group8v2' # change to the name of your db in xmap
 }
 
 
@@ -19,42 +19,44 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/products', methods =['POST'])
+@app.route('/item', methods =['POST'])
 def add_product():
     data = request.json
+    print("Received a POST request")
+    print(request.json)
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute("INSERT INTO products (name, price, qunatity) VALUES (%s, %s, %s)",
-                   ( data['name'], data['price'], data['quantity'])) 
+    cursor.execute("INSERT INTO item (iId ,Iname, Sprice, Category) VALUES (%s, %s, %s, %s)",
+                   ( data['iId'], data['Iname'], data['Sprice'], data['Category'])) 
     conn.commit()
     conn.close()
     return jsonify({'message': 'Product Added!'}), 201
 
-@app.route('/products', methods=['GET'])
-def get_products():
+@app.route('/item', methods=['GET'])
+def get_item():
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM products") 
-    cursor.fetchall()
+    cursor.execute("SELECT * FROM item") 
+    items= cursor.fetchall()
     conn.close()
-    return jsonify(products)
+    return jsonify(items)
 
-@app.route('/products/<int:id>', methods=['PUT'])
-def update_products(id):
+@app.route('/item/<int:iId>', methods=['PUT'])
+def update_item(iId):
     data = request.json
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute("UPDATE products SET name=%s, price=%s, quantity=%s",
-                   ( data['name'], data['price'], data['quantity'], id)) 
+    cursor.execute('UPDATE item SET iId=%s ,Iname=%s, Sprice=%s, Category=%s',
+                   ( data['iId'], data['Iname'], data['Sprice'], data['Category'])) 
     conn.commit()
     conn.close()
     return jsonify({'message': 'Product Updated!'})
 
-@app.route('/products/<int:id>', methods=['DELETE'])
-def delete_products(id):
+@app.route('/item/<int:iId>', methods=['DELETE'])
+def delete_item(iId):
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute("DELETE FROM products WHERE id=%s", (id,)) 
+    cursor.execute("DELETE FROM item WHERE iId=%s", (iId,)) 
     conn.commit()
     conn.close()
     return jsonify({'message': 'Product Deleted!'})

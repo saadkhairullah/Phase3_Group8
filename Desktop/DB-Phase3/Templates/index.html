@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale-1.0">
+    <title>item Management</title>
+</head>
+<body>
+<h2>item Management</h2>
+
+<h3>Add item</h3>
+<input type="number" id="iId" placeholder="iId">
+<input type="text" id="Iname" placeholder="Iname">
+<input type="number" id="Sprice" placeholder="Sprice">
+<input type="text" id="Category" placeholder="Category">
+<button onclick="add_product()">Add item</button>
+
+<h3>item List</h3>
+<ul id="itemList"></ul>
+
+<script>
+    function fetchitem(){
+        fetch('/item')
+            .then(response => response.json())
+            .then(data => {
+                let itemList = document.getElementById('itemList');
+                itemList.innerHTML = '';
+                data.forEach(item => {
+                    let li = document.createElement("li");
+                    li.innerHTML = `${item.iId} - ${item.Iname} - ${item.Sprice} - ${item.Category}
+                        <button onclick="deleteitem(${item.iId})">Delete</button>`;
+                    itemList.appendChild(li);
+                });
+            });
+    }
+
+    function add_product(){
+        let iId = document.getElementById('iId').value;
+        let Iname = document.getElementById('Iname').value;
+        let Sprice = document.getElementById('Sprice').value;
+        let Category = document.getElementById('Category').value;
+
+        fetch('/item', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({iId , Iname, Sprice, Category})
+        }).then(() => fetchitem());
+    }
+
+    function deleteitem(iId){
+        fetch('/item/${iId}', {method: 'DELETE'})
+            .then(() => fetchitem());
+    }
+
+    fetchitem();
+</script>
+</body>
+</html>
