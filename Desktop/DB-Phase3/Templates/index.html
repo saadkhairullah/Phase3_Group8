@@ -20,7 +20,7 @@
 
 <script>
     function fetchitem(){
-        fetch('/item')
+        fetch(`/item`)
             .then(response => response.json())
             .then(data => {
                 let itemList = document.getElementById('itemList');
@@ -40,7 +40,7 @@
         let Sprice = document.getElementById('Sprice').value;
         let Category = document.getElementById('Category').value;
 
-        fetch('/item', {
+        fetch(`/item`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({iId , Iname, Sprice, Category})
@@ -48,7 +48,7 @@
     }
 
     function deleteitem(iId){
-        fetch('/item/${iId}', {method: 'DELETE'})
+        fetch(`/item/${iId}`, {method: 'DELETE'})
             .then(() => fetchitem());
     }
 

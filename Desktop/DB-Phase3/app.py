@@ -26,7 +26,7 @@ def add_product():
     print(request.json)
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute("INSERT INTO item (iId ,Iname, Sprice, Category) VALUES (%s, %s, %s, %s)",
+    cursor.execute('INSERT INTO item (iId ,Iname, Sprice, Category) VALUES (%s, %s, %s, %s)',
                    ( data['iId'], data['Iname'], data['Sprice'], data['Category'])) 
     conn.commit()
     conn.close()
