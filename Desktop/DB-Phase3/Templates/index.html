@@ -8,7 +8,7 @@
 <body>
 <h2>item Management</h2>
 
-<h3>Add item</h3>
+<h3>item</h3>
 <input type="number" id="iId" placeholder="iId">
 <input type="text" id="Iname" placeholder="Iname">
 <input type="number" id="Sprice" placeholder="Sprice">
@@ -17,6 +17,35 @@
 
 <h3>item List</h3>
 <ul id="itemList"></ul>
+
+<h3>Vendor</h3>
+<input type="number" id="vId" placeholder="vId">
+<input type="text" id="Vname" placeholder="Vname">
+<input type="text" id="Street" placeholder="Street">
+<input type="text" id="City" placeholder="City">
+<input type="text" id="StateAb" placeholder="StateAb">
+<input type="number" id="ZipCode" placeholder="ZipCode">
+<button onclick="add_vendor()">Add Vendor</button>
+
+<h3>vendor List</h3>
+<ul id="vendorList"></ul>
+
+<h3>Store Item</h3>
+<input type="number" id="sId" placeholder="sId">
+<input type="number" id="item_id" placeholder="iId">
+<input type="number" id="Scount" placeholder="Scount">
+<button onclick="add_store_item()">Add store_item</button>
+
+<h3>store_item</h3>
+<ul id="store_itemList"></ul>
+
+<h3>vendor Item</h3>
+<input type="number" id="vendorId" placeholder="vId">
+<input type="number" id="Item_id" placeholder="iId">
+<button onclick="add_vendor_item()">Add vendor_item</button>
+
+<h3>vendor_item</h3>
+<ul id="vendor_itemList"></ul>
 
 <script>
     function fetchitem(){
@@ -47,11 +76,109 @@
         }).then(() => fetchitem());
     }
 
-    function deleteitem(iId){
-        fetch(`/item/${iId}`, {method: 'DELETE'})
+    function deleteitem(id){
+        fetch(`/item/${id}`, {method: 'DELETE'})
             .then(() => fetchitem());
     }
+    function deletevendor(id){
+        fetch(`/vendor/${id}`, {method: 'DELETE'})
+            .then(() => fetchvendor());
+    }
+    function fetchvendor(){
+        fetch(`/vendor`)
+            .then(response => response.json())
+            .then(data => {
+                let vendorList = document.getElementById('vendorList');
+                vendorList.innerHTML = '';
+                data.forEach(vendor => {
+                    let Li = document.createElement("Li");
+                    Li.innerHTML = `${vendor.vId} - ${vendor.Vname} - ${vendor.Street} - ${vendor.City} - ${vendor.StateAb} - ${vendor.ZipCode}
+                        <button onclick="deletevendor(${vendor.vId})">Delete</button>`;
+                    vendorList.appendChild(Li);
+                });
+            });
+    }
+    function add_vendor(){
+        let vId = document.getElementById('vId').value;
+        let Vname = document.getElementById('Vname').value;
+        let Street = document.getElementById('Street').value;
+        let City = document.getElementById('City').value;
+        let StateAb = document.getElementById('StateAb').value;
+        let ZipCode = document.getElementById('ZipCode').value;
 
+
+        fetch(`/vendor`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({vId , Vname, Street, City, StateAb,ZipCode})
+        }).then(() => fetchvendor());
+    }
+
+
+
+
+    function deletestore_item(sId,iId){
+        fetch(`/store_item/${sId}/${iId}`, {method: 'DELETE'})
+            .then(() => fetchstore_item());
+    }
+    function fetchstore_item(){
+        fetch(`/store_item`)
+            .then(response => response.json())
+            .then(data => {
+                let store_itemList = document.getElementById('store_itemList');
+                store_itemList.innerHTML = '';
+                data.forEach(store_item => {
+                    let LI = document.createElement("LI");
+                    LI.innerHTML = `${store_item.sId} - ${store_item.iId} - ${store_item.Scount}
+                        <button onclick="deletestore_item(${store_item.sId},${store_item.iId})">Delete</button>`;
+                        store_itemList.appendChild(LI);
+                });
+            });
+    }
+    function add_store_item(){
+        let sId = document.getElementById('sId').value;
+        let iId = document.getElementById('item_id').value;
+        let Scount = document.getElementById('Scount').value;
+        fetch(`/store_item`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({sId , iId, Scount})
+        }).then(() => fetchstore_item());
+    }
+
+
+
+    function deletevendor_item(vId,iId){
+        fetch(`/vendor_item/${vId}/${iId}`, {method: 'DELETE'})
+            .then(() => fetchvendor_item());
+    }
+    function fetchvendor_item(){
+        fetch(`/vendor_item`)
+            .then(response => response.json())
+            .then(data => {
+                let vendor_itemList = document.getElementById('vendor_itemList');
+                vendor_itemList.innerHTML = '';
+                data.forEach(vendor_item => {
+                    let LI = document.createElement("LI");
+                    LI.innerHTML = `${vendor_item.vId} - ${vendor_item.iId}
+                        <button onclick="deletevendor_item(${vendor_item.vId},${vendor_item.iId})">Delete</button>`;
+                        vendor_itemList.appendChild(LI);
+                });
+            });
+    }
+    function add_vendor_item(){
+        let vId = document.getElementById('vendorId').value;
+        let iId = document.getElementById('Item_id').value;
+        fetch(`/vendor_item`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({vId , iId})
+        }).then(() => fetchvendor_item());
+    }
+    
+    fetchvendor_item();
+    fetchstore_item();
+    fetchvendor();
     fetchitem();
 </script>
 </body>
