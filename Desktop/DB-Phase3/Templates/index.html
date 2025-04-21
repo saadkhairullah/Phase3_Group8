@@ -47,6 +47,21 @@
 <h3>vendor_item</h3>
 <ul id="vendor_itemList"></ul>
 
+<h3>QV1</h3>
+<ul id = "getQV1"></ul>
+
+<h3>QV2</h3>
+<ul id = "getQV2"></ul>
+
+<h3>QV3</h3>
+<ul id = "getQV3"></ul>
+
+<h3>QV4</h3>
+<ul id = "getQV4"></ul>
+
+<h3>QV5</h3>
+<ul id = "getQV5"></ul>
+
 <script>
     function fetchitem(){
         fetch(`/item`)
@@ -175,7 +190,81 @@
             body: JSON.stringify({vId , iId})
         }).then(() => fetchvendor_item());
     }
-    
+
+    function getQV1(){
+        fetch(`/itemsalessummary`, {method: 'GET'})
+        .then(response => response.json())
+            .then(data => {
+                let getQV1 = document.getElementById('getQV1');
+                getQV1.innerHTML = '';
+                data.forEach(itemsalessumary => {
+                    let LI = document.createElement("LI");
+                    LI.innerHTML = `${itemsalessumary.Iname} - ${itemsalessumary.TotalRevenue}`
+                        getQV1.appendChild(LI);
+    });
+            });
+        }
+
+        function getQV2(){
+            fetch(`/itemsalessummary`, {method: 'GET1'})
+            .then(response => response.json())
+                .then(data => {
+                    let getQV2 = document.getElementById('getQV2');
+                    getQV2.innerHTML = '';
+                    data.forEach(itemsalessumary => {
+                        let LI = document.createElement("LI");
+                        LI.innerHTML = `${itemsalessumary.Iname} - ${itemsalessumary.TotalQuantitySold}`
+                            getQV2.appendChild(LI);
+        });
+                });
+            }
+
+            function getQV3(){
+                fetch(`/toployalcustomers`, {method: 'GET'})
+                .then(response => response.json())
+                    .then(data => {
+                        let getQV3 = document.getElementById('getQV3');
+                        getQV3.innerHTML = '';
+                        data.forEach(toployalcustomers => {
+                            let LI = document.createElement("LI");
+                            LI.innerHTML = `${toployalcustomers.Cname}, ${toployalcustomers.LoyaltyScore}`
+                                getQV3.appendChild(LI);
+            });
+                    });
+                }
+
+                function getQV4(){
+                    fetch(`/toployalcustomers`, {method: 'GET1'})
+                    .then(response => response.json())
+                        .then(data => {
+                            let getQV4 = document.getElementById('getQV4');
+                            getQV4.innerHTML = '';
+                            data.forEach(toployalcustomers => {
+                                let LI = document.createElement("LI");
+                                LI.innerHTML = `${toployalcustomers.Cname}, ${toployalcustomers.LoyaltyScore}`
+                                    getQV4.appendChild(LI);
+                });
+                        });
+                    }
+
+                    function getQV5(){
+                        fetch(`/itemsalessummary`, {method: 'GET2'})
+                        .then(response => response.json())
+                            .then(data => {
+                                let getQV5 = document.getElementById('getQV5');
+                                getQV5.innerHTML = '';
+                                data.forEach(itemsalessumary => {
+                                    let LI = document.createElement("LI");
+                                    LI.innerHTML = `${itemsalessumary.TotalRevenue}`
+                                        getQV5.appendChild(LI);
+                    });
+                            });
+                        }
+    getQV5();
+    getQV4();
+    getQV3();
+    getQV2();
+    getQV1();
     fetchvendor_item();
     fetchstore_item();
     fetchvendor();
