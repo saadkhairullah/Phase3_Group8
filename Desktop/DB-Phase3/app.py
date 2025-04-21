@@ -3,6 +3,7 @@ import mysql.connector
 
 app = Flask(__name__,template_folder="Templates")
 
+
 DB_CONFIG = {
     'host': '127.0.0.1',
     'user': 'root',
@@ -62,6 +63,16 @@ def delete_products(id):
     conn.close()
     return jsonify({'message': 'Product Deleted!'})
     
-    
+@app.route('/vendor', methods=['POST'])
+def add_vendor():
+    data = request.json
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("INSERT INTO vendor (vID, Vname, Street, City, StateAb, ZipCode) VALUES (%s, %s, %s, %s, %s, %s)",
+                   (data["vID"], data['Vname'], data['Street'], data['City'], data['StateAb'], data['ZipCode']))
+    conn.commit()
+    conn.close()
+    return jsonify({'message': 'Vendor Added Successfully!'})
+
 if __name__ == '__main__':
         app.run(debug=True)

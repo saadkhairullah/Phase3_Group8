@@ -17,7 +17,33 @@
 <h3>Products List</h3>
 <ul id="productList"></ul>
 
+<h4>Add Vendor</h4>
+<input type="number" id="vID" placeholder="Vendor ID">
+<input type="text" id="Vname" placeholder="Vendor Name">
+<input type="text" id="Street" placeholder="Street">
+<input type="text" id="City" placeholder="City">
+<input type="text" id="StateAb" placeholder="StateAb">
+<input type="number" id="ZipCode" placeholder="ZipCode">
+<button onclick ="addVendor()">Add Vendor</button>
+
+
 <script>
+    function addVendor(){
+        let vID = document.getElementById('vID').value;
+        let Vname = document.getElementById('Vname').value;
+        let Street = document.getElementById('Street').value;
+        let City = document.getElementById('City').value;
+        let StateAb = document.getElementById('StateAb').value;
+        let ZipCode = document.getElementById('ZipCode').value;
+        fetch('/vendor', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({vID, Vname, Street, City, StateAb, ZipCode})
+        })
+    }
+
+
+
     function fetchProducts(){
         fetch('/products')
             .then(response => response.json())
