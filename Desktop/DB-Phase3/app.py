@@ -169,6 +169,52 @@ def delete_vendor_item(vId,iId):
     conn.commit()
     conn.close()
     return jsonify({'message': 'vendor_Item Deleted!'})
+
+@app.route('/itemsalessummary', methods=['GET'])
+def get_QV1():
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("SELECT Iname, TotalRevenue FROM itemsalessummary ORDER BY TotalRevenue DESC LIMIT 3 ") 
+    summary= cursor.fetchall()
+    conn.close()
+    return jsonify(summary)
+
+@app.route('/itemsalessummary', methods=['GET1'])
+def get_QV2():
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("SELECT Iname, TotalQuantitySold FROM itemsalessummary WHERE TotalQuantitySold > 50;") 
+    summary= cursor.fetchall()
+    conn.close()
+    return jsonify(summary)
+
+@app.route('/toployalcustomers', methods=['GET'])
+def get_QV3():
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("SELECT Cname, LoyaltyScore FROM toployalcustomers WHERE LoyaltyScore = (SELECT MAX(LoyaltyScore) FROM toployalcustomers)") 
+    summary= cursor.fetchall()
+    conn.close()
+    return jsonify(summary)
+
+@app.route('/toployalcustomers', methods=['GET1'])
+def get_QV4():
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("SELECT Cname, LoyaltyScore FROM toployalcustomers WHERE LoyaltyScore = 5 OR LoyaltyScore = 4") 
+    summary= cursor.fetchall()
+    conn.close()
+    return jsonify(summary)
+
+@app.route('/itemsalessummary', methods=['GET2'])
+def get_QV5():
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("SELECT SUM(TotalRevenue) AS TotalRevenue FROM itemsalessummary LIMIT 1") 
+    summary= cursor.fetchall()
+    conn.close()
+    return jsonify(summary)
+
     
 if __name__ == '__main__':
         app.run(debug=True)
