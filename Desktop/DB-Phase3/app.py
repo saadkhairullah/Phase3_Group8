@@ -42,12 +42,12 @@ def get_item():
     return jsonify(items)
 
 @app.route('/item/<int:iId>', methods=['PUT'])
-def update_item(iId):
+def updateitem(iId):
     data = request.json
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute('UPDATE item SET iId=%s ,Iname=%s, Sprice=%s, Category=%s',
-                   ( data['iId'], data['Iname'], data['Sprice'], data['Category'])) 
+    cursor.execute('UPDATE item SET Sprice=%s WHERE iId=%s',
+                   (data['Sprice'], iId)) 
     conn.commit()
     conn.close()
     return jsonify({'message': 'Product Updated!'})

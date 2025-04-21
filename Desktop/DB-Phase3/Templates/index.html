@@ -72,7 +72,9 @@
                 data.forEach(item => {
                     let li = document.createElement("li");
                     li.innerHTML = `${item.iId} - ${item.Iname} - ${item.Sprice} - ${item.Category}
-                        <button onclick="deleteitem(${item.iId})">Delete</button>`;
+                        <button onclick="deleteitem(${item.iId})">Delete</button>;
+                        <input type="number" id="Sprice2-${item.iId}" placeholder="Newprice">
+                        <button onclick="updateitem(${item.iId})">update</button>`;
                     itemList.appendChild(li);
                 });
             });
@@ -88,6 +90,15 @@
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({iId , Iname, Sprice, Category})
+        }).then(() => fetchitem());
+    }
+    function updateitem(iId){
+        let Sprice = document.getElementById(`Sprice2-${iId}`).value;
+
+        fetch(`/item/${iId}`, {
+            method: 'PUT',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({Sprice})
         }).then(() => fetchitem());
     }
 
